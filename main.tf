@@ -1,5 +1,5 @@
-terraform{
-  required_version = "~> 1.12.0"
+terraform {
+  required_version = "~> 1.11.4"
 
   required_providers {
     aws = {
@@ -10,7 +10,7 @@ terraform{
 }
 
 provider "aws" {
-  region  = "us-east-1"
+  region = "us-east-1"
 }
 
 # VPC
@@ -59,11 +59,11 @@ resource "aws_route_table_association" "a" {
 }
 
 resource "aws_security_group" "web_sg" {
-  name    = "main-web-sg"
+  name        = "main-web-sg"
   description = "Allow SSH, HTTP, HTTPS"
-  vpc_id = aws_vpc.main.id
+  vpc_id      = aws_vpc.main.id
 
-    ingress {
+  ingress {
     description = "Allow SSH"
     from_port   = 22
     to_port     = 22
@@ -102,10 +102,10 @@ resource "aws_security_group" "web_sg" {
 
 data "aws_ami" "amazon_linux" {
   most_recent = true
-  owners = ["amazon"]
+  owners      = ["amazon"]
 
   filter {
-    name = "name"
+    name   = "name"
     values = ["al2023-ami-*-x86_64"]
   }
 }
@@ -120,7 +120,7 @@ resource "aws_instance" "nginx_proxy" {
   tags = {
     Name = "nginx-proxy"
   }
-  
+
   user_data = <<-EOF
               #!/bin/bash
               sudo yum install -y nginx
@@ -131,10 +131,10 @@ resource "aws_instance" "nginx_proxy" {
 
 
 resource "aws_instance" "web1" {
-  ami                         = data.aws_ami.amazon_linux.id
-  instance_type               = "t2.micro"
-  subnet_id                   = aws_subnet.subnet-1.id
-  vpc_security_group_ids      = [aws_security_group.web_sg.id]
+  ami                    = data.aws_ami.amazon_linux.id
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.subnet-1.id
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
 
   tags = {
     Name = "web-1"
@@ -149,10 +149,10 @@ resource "aws_instance" "web1" {
 }
 
 resource "aws_instance" "web2" {
-  ami                         = data.aws_ami.amazon_linux.id
-  instance_type               = "t2.micro"
-  subnet_id                   = aws_subnet.subnet-1.id
-  vpc_security_group_ids      = [aws_security_group.web_sg.id]
+  ami                    = data.aws_ami.amazon_linux.id
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.subnet-1.id
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
   tags = {
     Name = "web-2"
   }
@@ -166,10 +166,10 @@ resource "aws_instance" "web2" {
 }
 
 resource "aws_instance" "web3" {
-  ami                         = data.aws_ami.amazon_linux.id
-  instance_type               = "t2.micro"
-  subnet_id                   = aws_subnet.subnet-1.id
-  vpc_security_group_ids      = [aws_security_group.web_sg.id]
+  ami                    = data.aws_ami.amazon_linux.id
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.subnet-1.id
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
 
   tags = {
     Name = "web-3"
@@ -184,9 +184,9 @@ resource "aws_instance" "web3" {
 }
 
 resource "aws_dynamodb_table" "mysqldb" {
-  name = "mysqldb"
+  name         = "mysqldb"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key = "id"
+  hash_key     = "id"
 
   attribute {
     name = "id"
