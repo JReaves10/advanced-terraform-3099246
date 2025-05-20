@@ -1,29 +1,44 @@
-### VARIABLES
-variable "project-id" {
-  type = string
-}
-
 variable "region" {
   type = string
-  default = "us-central1"
+  default = "us-east-1"
 }
 
-variable "zone" {
+variable "vpc_cidr" {
   type = string
-  default = "us-central1-a"
+  default = "10.0.0.0/16"
 }
 
-variable "subnet-name" {
+variable "subnet_name" {
   type = string
-  default = "subnet1"
+  default = "public-subnet-1"
 }
 
-variable "subnet-cidr" {
+variable "subnet_cidr" {
   type = string
-  default = "10.127.0.0/20"
+  default = "10.0.1.0/24"
 }
 
-variable "private_google_access" {
-  type = bool
-  default = true
+variable "ami_owner" {
+  type = string
+  default = "amazon"
+}
+
+variable "ami_name" {
+  type = string
+  default = "amzn2-ami-hvm-*-x86_64-gp2"
+}
+
+variable "instance_type" {
+  type = string
+  default = "t2.micro"
+}
+
+variable "allowed_ports" {
+  type = list(number)
+  default = [22, 80, 443]
+}
+
+variable "sg_cidr" {
+  type = string
+  default = "0.0.0.0/0"
 }
