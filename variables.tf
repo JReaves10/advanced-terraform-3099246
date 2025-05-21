@@ -1,90 +1,102 @@
-### VARIABLES
-variable "project-id" {
-  type = string
-}
-
 variable "region" {
-  type = string
-  default = "us-central1"
+  type    = string
+  default = "us-east-1"
 }
 
-variable "zone" {
-  type = string
-  default = "us-central1-a"
+variable "vpc_cidr" {
+  type    = string
+  default = "10.0.0.0/16"
 }
 
-variable "subnet-name" {
-  type = string
-  default = "subnet1"
+variable "subnet_name" {
+  type    = string
+  default = "public-subnet-1"
 }
 
-variable "subnet-cidr" {
-  type = string
-  default = "10.127.0.0/20"
+variable "subnet_cidr" {
+  type    = string
+  default = "10.0.1.0/24"
 }
 
-variable "private_google_access" {
-  type = bool
-  default = true
+variable "ami_owner" {
+  type    = string
+  default = "amazon"
 }
 
-variable "firewall-ports" {
-  type = list
-  default = ["80", "8080", "1000-2000", "22"]
+variable "ami_name" {
+  type    = string
+  default = "amzn2-ami-hvm-*-x86_64-gp2"
 }
 
-variable "compute-source-tags" {
-    type = list
-    default = ["web"]
+variable "instance_type" {
+  type    = string
+  default = "t2.micro"
+}
+
+variable "allowed_ports" {
+  type    = list(number)
+  default = [22, 80, 443]
+}
+
+variable "sg_cidr" {
+  type    = string
+  default = "0.0.0.0/0"
 }
 
 variable "target_environment" {
-  default = "DEV"
+  description = "The target environment to deploy into"
+  type        = string
+  default     = "DEV"
 }
 
 variable "environment_list" {
-  type = list(string)
-  default = ["DEV","QA","STAGE","PROD"]
+  type    = list(string)
+  default = ["DEV", "QA", "STAGE", "PROD"]
 }
 
 variable "environment_map" {
   type = map(string)
   default = {
-    "DEV" = "dev",
-    "QA" = "qa",
+    "DEV"   = "dev",
+    "QA"    = "qa",
     "STAGE" = "stage",
-    "PROD" = "prod"
-  }
-}
-
-variable "environment_machine_type" {
-  type = map(string)
-  default = {
-    "DEV" = "f1-micro",
-    "QA" = "f1-micro",
-    "STAGE" = "f1-micro",
-    "PROD" = "f1-micro"
+    "PROD"  = "prod"
   }
 }
 
 variable "environment_instance_settings" {
-  type = map(object({machine_type=string, tags=list(string)}))
+  type = map(object({
+    instance_type = string
+    tags          = map(string)
+  }))
   default = {
     "DEV" = {
-      machine_type = "f1-micro"
-      tags = ["dev"]
-    },
-   "QA" = {
-      machine_type = "f1-micro"
-      tags = ["qa"]
-    },
+      instance_type = "t2.micro",
+      tags = {
+        Name        = "dev-instance",
+        Environment = "DEV"
+      }
+    }
+    "QA" = {
+      instance_type = "t2.micro",
+      tags = {
+        Name        = "qa-instance",
+        Environment = "QA"
+      }
+    }
     "STAGE" = {
-      machine_type = "f1-micro"
-      tags = ["stage"]
-    },
+      instance_type = "t2.micro",
+      tags = {
+        Name        = "stage-instance",
+        Environment = "STAGE"
+      }
+    }
     "PROD" = {
-      machine_type = "f1-micro"
-      tags = ["prod"]
+      instance_type = "t2.micro",
+      tags = {
+        Name        = "prod-instance",
+        Environment = "PROD"
+      }
     }
   }
 }
