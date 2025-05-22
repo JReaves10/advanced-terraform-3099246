@@ -110,7 +110,7 @@ module "remote_state_bucket" {
   }
 
   tags = {
-    Environment = var.target_environment
+    Environment = "dev"
     Purpose     = "Terraform Remote State"
   }
 }
