@@ -94,3 +94,34 @@ resource "aws_dynamodb_table" "mysqldb" {
     Name = "mysqldb"
   }
 }
+
+module "remote_state_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 4.0"
+
+  bucket = "remotestate-jreavesbucket-${var.target_environment}"
+  acl    = "private"
+
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
+
+  versioning = {
+    enabled = true
+  }
+
+  tags = {
+    Environment = var.target_environment
+    Purpose     = "Terraform Remote State"
+  }
+}
+
+resource "aws_dynamodb_table" "terraform_locks" {
+  name         = "terraform-locks"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+}
