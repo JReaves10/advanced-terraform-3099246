@@ -18,5 +18,4 @@ module "iam_assumable_roles" {
     "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
     "arn:aws:iam::aws:policy/AmazonS3FullAccess"
   ]
-  number_of_custom_role_policy_arns = 2
 }
