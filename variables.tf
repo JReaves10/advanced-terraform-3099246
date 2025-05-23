@@ -100,7 +100,3 @@ variable "environment_instance_settings" {
     }
   }
 }
-
-variable "tfcloud_organization" {
-  type = string
-}

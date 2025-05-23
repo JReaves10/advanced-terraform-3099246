@@ -80,48 +80,48 @@ resource "aws_instance" "web-map-instances" {
               EOF
 }
 
-resource "aws_dynamodb_table" "mysqldb" {
-  name         = "mysqldb"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "id"
+# resource "aws_dynamodb_table" "mysqldb" {
+#   name         = "mysqldb"
+#   billing_mode = "PAY_PER_REQUEST"
+#   hash_key     = "id"
 
-  attribute {
-    name = "id"
-    type = "S"
-  }
+#   attribute {
+#     name = "id"
+#     type = "S"
+#   }
 
-  tags = {
-    Name = "mysqldb"
-  }
-}
+#   tags = {
+#     Name = "mysqldb"
+#   }
+# }
 
-module "remote_state_bucket" {
-  source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 4.0"
+# module "remote_state_bucket" {
+#   source  = "terraform-aws-modules/s3-bucket/aws"
+#   version = "~> 4.0"
 
-  bucket = "remotestate-jreavesbucket-dev"
-  acl    = "private"
+#   bucket = "remotestate-jreavesbucket-dev"
+#   acl    = "private"
 
-  control_object_ownership = true
-  object_ownership         = "ObjectWriter"
+#   control_object_ownership = true
+#   object_ownership         = "ObjectWriter"
 
-  versioning = {
-    enabled = true
-  }
+#   versioning = {
+#     enabled = true
+#   }
 
-  tags = {
-    Environment = "dev"
-    Purpose     = "Terraform Remote State"
-  }
-}
+#   tags = {
+#     Environment = "dev"
+#     Purpose     = "Terraform Remote State"
+#   }
+# }
 
-resource "aws_dynamodb_table" "terraform_locks" {
-  name         = "terraform-locks"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
+# resource "aws_dynamodb_table" "terraform_locks" {
+#   name         = "terraform-locks"
+#   billing_mode = "PAY_PER_REQUEST"
+#   hash_key     = "LockID"
 
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-}
+#   attribute {
+#     name = "LockID"
+#     type = "S"
+#   }
+#}
